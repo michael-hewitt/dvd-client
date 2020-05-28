@@ -1,26 +1,42 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
 
-function App() {
+const Categories = ({ categories }) => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <div className='categories'>
+      <h1>Categories</h1>
+       {categories.map((category) =>
+           <div className='category' key={category.category_id}>
+             {category.name}
+           </div>
+       )}
+     </div>
+  )
+}
+
+class App extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      categories: []
+    }
+  }
+
+  componentDidMount() {
+    fetch('/api/categories')
+      .then(result => result.json())
+      .then((data) => {
+        this.setState({categories: data})
+      })
+      .catch(console.log)
+  }
+
+  render() {
+    return (
+        // <div>Hello world.</div>
+       <Categories categories={this.state.categories} />
+    )
+  }
 }
 
 export default App;
